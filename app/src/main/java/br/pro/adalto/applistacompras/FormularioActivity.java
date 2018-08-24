@@ -7,18 +7,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.List;
 
 import br.pro.adalto.applistacompras.dao.CategoriaDAO;
 import br.pro.adalto.applistacompras.model.Categoria;
 
 public class FormularioActivity extends AppCompatActivity {
 
+    private Spinner spCategoria;
+    private ArrayAdapter adapter;
+    private List<Categoria> listaDeCategorias;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
+
+        spCategoria = (Spinner) findViewById(R.id.spCategoria);
+        carregarCategorias();
     }
+
+    private void carregarCategorias(){
+        listaDeCategorias = CategoriaDAO.getCategorias(this);
+
+        Categoria fake = new Categoria();
+        fake.setId(0);
+        fake.setNome( getResources().getString(R.string.txtSelecione) );
+
+        listaDeCategorias.add(0 , fake);
+
+        adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1 , listaDeCategorias );
+        spCategoria.setAdapter(adapter);
+    }
+
 
 
     @Override
@@ -50,6 +77,7 @@ public class FormularioActivity extends AppCompatActivity {
                             Categoria cat = new Categoria();
                             cat.setNome(  nomeCat.getText().toString() );
                             CategoriaDAO.inserir(FormularioActivity.this, cat);
+                            carregarCategorias();
                         }
                     });
             alerta.show();
