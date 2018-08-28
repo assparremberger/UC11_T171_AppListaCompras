@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
 
 import br.pro.adalto.applistacompras.dao.CategoriaDAO;
+import br.pro.adalto.applistacompras.dao.ProdutoDAO;
 import br.pro.adalto.applistacompras.model.Categoria;
+import br.pro.adalto.applistacompras.model.Produto;
 
 public class FormularioActivity extends AppCompatActivity {
 
@@ -22,15 +25,49 @@ public class FormularioActivity extends AppCompatActivity {
     private ArrayAdapter adapter;
     private List<Categoria> listaDeCategorias;
 
+    private EditText etNome, etQuantidade;
+    private Button btnSalvar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
 
+        etNome =       (EditText) findViewById(R.id.etNomeProduto);
+        etQuantidade = (EditText) findViewById(R.id.etQuantidade);
+        btnSalvar =    (Button)   findViewById(R.id.btnSalvar);
+
         spCategoria = (Spinner) findViewById(R.id.spCategoria);
         carregarCategorias();
     }
+
+    private void salvarProduto(){
+
+        String nome = etNome.getText().toString();
+
+        if ( nome.isEmpty() || spCategoria.getSelectedItemPosition() == 0 ){
+            //implementar mensagem de erro
+        }else {
+            Produto prod = new Produto();
+            prod.setNome( nome );
+
+            String quantidade = etQuantidade.getText().toString();
+            double qtd = 0;
+            if( ! quantidade.isEmpty() ){
+                quantidade = quantidade.replace("," , ".");
+                qtd = Double.valueOf( quantidade );
+            }
+            prod.setQuantidade(qtd);
+            prod.setCategoria( (Categoria) spCategoria.getSelectedItem() );
+            ProdutoDAO.inserir(this, prod);
+            finish();
+
+        }
+
+
+    }
+
+
 
     private void carregarCategorias(){
         listaDeCategorias = CategoriaDAO.getCategorias(this);

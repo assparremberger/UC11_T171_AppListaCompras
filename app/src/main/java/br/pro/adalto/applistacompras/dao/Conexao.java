@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Conexao extends SQLiteOpenHelper{
 
     private static final String NOME_BANCO = "appLista";
-    private static final int VERSAO_BANCO = 1;
+    private static final int VERSAO_BANCO = 2;
 
     public Conexao(Context contexto){
         super(contexto, NOME_BANCO, null, VERSAO_BANCO );
@@ -29,15 +29,18 @@ public class Conexao extends SQLiteOpenHelper{
                 " CREATE TABLE IF NOT EXISTS produtos (             " +
                 "   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT , " +
                 "   nome TEXT NOT NULL ,                            " +
-                "   preco DOUBLE ,                                  " +
+                "   quantidade DOUBLE ,                                  " +
                 "   codCategoria INTEGER )                          " );
     }
 
 
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int antiga, int nova) {
+        if (antiga == 1 && nova == 2){
+            sqLiteDatabase.execSQL("DROP TABLE produtos");
+            onCreate(sqLiteDatabase);
+        }
     }
 }
 

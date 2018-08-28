@@ -23,7 +23,7 @@ public class ProdutoDAO {
 
         ContentValues valores = new ContentValues();
         valores.put("nome", produto.getNome() );
-        valores.put("preco", produto.getPreco() );
+        valores.put("quantidade", produto.getQuantidade() );
         valores.put("codCategoria", produto.getCategoria().getId() );
 
         banco.insert("produtos", null, valores);
@@ -48,7 +48,7 @@ public class ProdutoDAO {
                 Produto produto = new Produto();
                 produto.setId( tabela.getInt( 0 ) );
                 produto.setNome( tabela.getString( 1 ) );
-                produto.setPreco( tabela.getDouble( 2 ) );
+                produto.setQuantidade( tabela.getDouble( 2 ) );
 
                 Categoria cat = new Categoria();
                 cat.setId( tabela.getInt(3) );
