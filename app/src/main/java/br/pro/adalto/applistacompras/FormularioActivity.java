@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +40,15 @@ public class FormularioActivity extends AppCompatActivity {
 
         spCategoria = (Spinner) findViewById(R.id.spCategoria);
         carregarCategorias();
+
+        btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                salvarProduto();
+            }
+        });
+
+
     }
 
     private void salvarProduto(){
@@ -46,7 +56,15 @@ public class FormularioActivity extends AppCompatActivity {
         String nome = etNome.getText().toString();
 
         if ( nome.isEmpty() || spCategoria.getSelectedItemPosition() == 0 ){
-            //implementar mensagem de erro
+
+            AlertDialog.Builder alerta = new AlertDialog.Builder(this);
+            alerta.setTitle(getResources().getString(R.string.txtAtencao));
+            alerta.setIcon( android.R.drawable.ic_dialog_alert );
+            alerta.setMessage( R.string.txtCamposObrigatorios );
+            alerta.setNeutralButton("OK", null);
+            alerta.show();
+
+
         }else {
             Produto prod = new Produto();
             prod.setNome( nome );

@@ -12,4 +12,7 @@
     <string name="txtSelecione">Select a category... </string>
     <string name="txtSalvar">Save</string>
 
+    <string name="txtAtencao">Attention!</string>
+    <string name="txtCamposObrigatorios">Enter required fields</string>
+
 </resources>

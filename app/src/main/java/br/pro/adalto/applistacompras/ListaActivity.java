@@ -19,6 +19,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.pro.adalto.applistacompras.dao.ProdutoDAO;
+import br.pro.adalto.applistacompras.model.Produto;
+
 public class ListaActivity extends AppCompatActivity {
 
     private EditText produto;
@@ -95,6 +98,17 @@ public class ListaActivity extends AppCompatActivity {
             }
         });
 
+
+        carregarProdutos();
+        produto.setVisibility(View.INVISIBLE);
+
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        carregarProdutos();
     }
 
     @Override
@@ -118,4 +132,18 @@ public class ListaActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void carregarProdutos(){
+        List<Produto> listaDeProdutos = ProdutoDAO.getProdutos(this);
+        adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, listaDeProdutos );
+        lvLista.setAdapter( adapter );
+
+    }
+
+
+
+
+
+
 }
