@@ -135,8 +135,11 @@ public class ListaActivity extends AppCompatActivity {
 
     private void carregarProdutos(){
         List<Produto> listaDeProdutos = ProdutoDAO.getProdutos(this);
-        adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, listaDeProdutos );
+        // adapter = new ArrayAdapter(this,
+        //        android.R.layout.simple_list_item_1, listaDeProdutos );
+
+        AdapterProdutos adapter = new AdapterProdutos(this, listaDeProdutos);
+
         lvLista.setAdapter( adapter );
 
     }
