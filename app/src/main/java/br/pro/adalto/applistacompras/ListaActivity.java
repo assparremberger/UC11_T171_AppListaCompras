@@ -27,7 +27,7 @@ public class ListaActivity extends AppCompatActivity {
     private EditText produto;
     private ListView lvLista;
 
-    private List<String> listaDeProdutos;
+    private List<Produto> listaDeProdutos;
     private ArrayAdapter adapter;
 
 
@@ -43,12 +43,12 @@ public class ListaActivity extends AppCompatActivity {
 
 
         //INICIO ----  Linhas para carregar o ListView ------
-        listaDeProdutos = new ArrayList<>();
-        adapter = new ArrayAdapter(
-                ListaActivity.this,
-                android.R.layout.simple_list_item_1,
-                listaDeProdutos);
-        lvLista.setAdapter(adapter);
+//        listaDeProdutos = new ArrayList<>();
+//        adapter = new ArrayAdapter(
+//                ListaActivity.this,
+//                android.R.layout.simple_list_item_1,
+//                listaDeProdutos);
+//        lvLista.setAdapter(adapter);
         //FIM ----  Linhas para carregar o ListView ------
 
 
@@ -83,13 +83,14 @@ public class ListaActivity extends AppCompatActivity {
                 alerta.setTitle("Atenção");
                 alerta.setIcon(android.R.drawable.ic_dialog_alert);
                 alerta.setMessage("Confirma a exclusão do produto "
-                        + listaDeProdutos.get(position) + "?");
+                        + listaDeProdutos.get(position).getNome() + "?");
                 alerta.setNeutralButton("Cancelar", null);
                 alerta.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        listaDeProdutos.remove(position);
-                        adapter.notifyDataSetChanged();
+//                        listaDeProdutos.remove(position);
+//                        adapter.notifyDataSetChanged();
+                        excluirProduto(position);
                     }
                 });
                 alerta.show();
@@ -104,6 +105,13 @@ public class ListaActivity extends AppCompatActivity {
 
     }
 
+
+    private void excluirProduto(int posicao){
+        Produto prod = (Produto) lvLista.getItemAtPosition(posicao);
+        ProdutoDAO.excluir(this, prod.getId() );
+        carregarProdutos();
+
+    }
 
     @Override
     protected void onRestart() {
@@ -134,7 +142,7 @@ public class ListaActivity extends AppCompatActivity {
     }
 
     private void carregarProdutos(){
-        List<Produto> listaDeProdutos = ProdutoDAO.getProdutos(this);
+        listaDeProdutos = ProdutoDAO.getProdutos(this);
         // adapter = new ArrayAdapter(this,
         //        android.R.layout.simple_list_item_1, listaDeProdutos );
 

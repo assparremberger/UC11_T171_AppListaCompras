@@ -36,7 +36,11 @@ public class ProdutoDAO {
         Conexao conn = new Conexao(contexto);
         SQLiteDatabase banco = conn.getReadableDatabase();
 
-        String sql = "SELECT * FROM produtos ORDER BY nome";
+        String sql = "SELECT p.id, p.nome, p.quantidade, " +
+                     " p.codCategoria, c.nome " +
+                     " FROM produtos p " +
+                     " INNER JOIN categorias c ON c.id = p.codCategoria " +
+                     " ORDER BY p.nome";
         Cursor tabela = banco.rawQuery(sql, null);
 
         if ( tabela.getCount() > 0 ){
@@ -52,6 +56,7 @@ public class ProdutoDAO {
 
                 Categoria cat = new Categoria();
                 cat.setId( tabela.getInt(3) );
+                cat.setNome( tabela.getString(4) );
 
                 produto.setCategoria( cat );
 
